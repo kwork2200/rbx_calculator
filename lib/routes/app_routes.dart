@@ -1,0 +1,30 @@
+abstract class Routes {
+  static const SPLASH = '/splash';
+  static const LANGUAGE = '/language';
+  static const ONBOARDING = '/onboarding';
+  static const CATEGORY = '/category';
+  static const HOME = '/home';
+  static const TRENDING = '/trending';
+  static const SOUND_PLAYER = '/sound_player';
+  static const SETTINGS = '/settings';
+  static const PRANK_CALL = '/prank_call';
+  static const ADD_CUSTOM = '/add_custom';
+  static const COLLECTIONS = '/collections';
+  static const FAVORITE = '/favorite';
+  static const PREMIUM = '/premium';
+  static const RATE_US = '/rate_us';
+  static const FEEDBACK = '/feedback';
+  static const PRANK_CALLING = '/prank_calling';
+  static const allCalculatorView = '/allCalculatorView';
+  static const scratchCardView = '/scratchCardView';
+  static const QUIZ_TIME = '/quiz-time';
+  static const QUIZ_RESULT = '/quiz-result';
+  static const SPIN_WHEEL = '/spin-wheel';
+  static const memes = '/memes';
+  static const String tips = '/tips';
+  static const String tipDetail = '/tip-detail';
+  static const CALCULATOR = '/calculator';
+  static const PRIVACY_POLICY = '/privacy-policy';
+  static const TERMS_CONDITIONS = '/terms-conditions';
+  static const CONTACT_US = '/contact-us';
+}

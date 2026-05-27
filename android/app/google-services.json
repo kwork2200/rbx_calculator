@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "757101401778",
+    "project_id": "ai-enhancer-b4c47",
+    "storage_bucket": "ai-enhancer-b4c47.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:757101401778:android:f421c1416476bcedef5bab",
+        "android_client_info": {
+          "package_name": "com.example.ai_enhancer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-HpvmoLON6iCbmaxPx-QY-U_Zyq3_kv8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:757101401778:android:5af60c1851d6eee8ef5bab",
+        "android_client_info": {
+          "package_name": "com.example.coin_calc"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-HpvmoLON6iCbmaxPx-QY-U_Zyq3_kv8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
