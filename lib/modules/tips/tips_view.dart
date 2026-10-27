@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../ads/ad_on_back_wrapper.dart';
+import '../../ads/bottom_native_ad_bar.dart';
+import '../../ads/hybrid_native_ad_widget.dart';
+import '../../utils/functions.dart';
 import 'tips_controller.dart';
 import '../../models/tip_model.dart';
 
@@ -13,7 +16,8 @@ class TipsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF0D0D0D),
-      appBar: _buildAppBar(),
+      bottomNavigationBar: const BottomNativeAdBar(),
+      appBar: _buildAppBar(context),
       body: Obx(() {
         if (controller.isLoading.value) {
           return const Center(
@@ -25,72 +29,7 @@ class TipsView extends StatelessWidget {
     );
   }
 
-  Widget _buildBottomAd() {
-    return Container(
-      color: const Color(0xFF1A1A1A),
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Container(
-                width: 50.w,
-                height: 50.w,
-                decoration: BoxDecoration(
-                  color: Colors.green.shade900,
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-                child: Icon(
-                  Icons.card_giftcard,
-                  color: Colors.white,
-                  size: 28.sp,
-                ),
-              ),
-              SizedBox(width: 10.w),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          'Daily Robux Rewards ',
-                          style: TextStyle(
-                            fontSize: 13.sp,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
-                          ),
-                        ),
-                        const Text('⭐'),
-                      ],
-                    ),
-                    Text(
-                      'Learn the fastest ways to get Robux',
-                      style: TextStyle(fontSize: 11.sp, color: Colors.white60),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.h),
-                decoration: BoxDecoration(
-                  color: Colors.white24,
-                  borderRadius: BorderRadius.circular(20.r),
-                ),
-                child: Text(
-                  'Ad',
-                  style: TextStyle(fontSize: 10.sp, color: Colors.white),
-                ),
-              ),
-            ],
-          )
-
-        ],
-      ),
-    );
-  }
-
-  PreferredSizeWidget _buildAppBar() {
+  PreferredSizeWidget _buildAppBar(BuildContext context) {
     return AppBar(
       backgroundColor: const Color(0xFF0D0D0D),
       elevation: 0,
@@ -98,7 +37,7 @@ class TipsView extends StatelessWidget {
       leading: Padding(
         padding: const EdgeInsets.all(8),
         child: GestureDetector(
-          onTap: controller.goBack,
+          onTap: () => handleBackWithAd(context),
           child: Container(
             decoration: const BoxDecoration(
               color: Color(0xFF1C1C1C),
@@ -120,25 +59,31 @@ class TipsView extends StatelessWidget {
   }
 
   Widget _buildList() {
-    return Column(
-      children: [
-        Expanded(
-          flex: 8,
-          child: ListView.separated(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            itemCount: controller.tips.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 12),
-            itemBuilder: (context, index) {
-              final tip = controller.tips[index];
-              return _TipCard(
-                tip: tip,
-                onTap: () => controller.openTipDetail(tip),
-              );
-            },
-          ),
-        ),
-        Expanded(flex: 1, child: _buildBottomAd()),
-      ],
+    const adInterval = 2; // Har 2 tips ke baad ek native ad
+    final tipCount = controller.tips.length;
+    // Last item ke baad ad nahi lagana, is liye ad count aise nikalte hain
+    final adCount = tipCount <= adInterval ? 0 : (tipCount - 1) ~/ adInterval;
+    final totalCount = tipCount + adCount;
+
+    return ListView.separated(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      itemCount: totalCount,
+      separatorBuilder: (_, __) => const SizedBox(height: 12),
+      itemBuilder: (context, index) {
+        // Har (2 items + 1 ad) wale block me teesri slot par ad dikhao
+        if ((index + 1) % (adInterval + 1) == 0) {
+          return const HybridNativeAdWidget();
+        }
+        final tipIndex = index - (index ~/ (adInterval + 1));
+        final tip = controller.tips[tipIndex];
+        return _TipCard(
+          tip: tip,
+          onTap: () async {
+            await showAdBeforeNavigation(context);
+            controller.openTipDetail(tip);
+          },
+        );
+      },
     );
   }
 }

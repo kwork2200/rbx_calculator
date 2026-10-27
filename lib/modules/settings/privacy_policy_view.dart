@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
+import '../../ads/ad_on_back_wrapper.dart';
+import '../../ads/bottom_native_ad_bar.dart';
 
 class PrivacyPolicyView extends StatelessWidget {
   const PrivacyPolicyView({Key? key}) : super(key: key);
@@ -10,11 +11,12 @@ class PrivacyPolicyView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
+      bottomNavigationBar: const BottomNativeAdBar(),
       appBar: AppBar(
         backgroundColor: const Color(0xFF1A1A1A),
         elevation: 0,
         leading: GestureDetector(
-          onTap: () => Get.back(),
+          onTap: () => handleBackWithAd(context),
           child: Container(
             margin: EdgeInsets.all(8.w),
             decoration: const BoxDecoration(
@@ -86,7 +88,7 @@ class PrivacyPolicyView extends StatelessWidget {
             _buildSectionCard(
               title: '6. Contact Us',
               content:
-              'If you have any questions about this Privacy Policy, please contact us at support@rbxcalculator.com',
+              'If you have any questions about this Privacy Policy, please contact us at vaghasiyasanket36@gmail.com',
             ),
             SizedBox(height: 20.h),
           ],

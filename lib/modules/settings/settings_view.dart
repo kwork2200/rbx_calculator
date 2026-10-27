@@ -4,7 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../ads/ad_on_back_wrapper.dart';
+import '../../ads/bottom_native_ad_bar.dart';
 import '../../routes/app_routes.dart';
+import '../../utils/functions.dart';
 import '../theme/theme_controller.dart';
 import 'settings_controller.dart';
 
@@ -17,11 +20,12 @@ class SettingsView extends GetView<SettingsController> {
       builder: (themeController) {
         return Scaffold(
           backgroundColor: Colors.black,
+          bottomNavigationBar: const BottomNativeAdBar(),
           appBar: AppBar(
             backgroundColor: const Color(0xFF1A1A1A),
             elevation: 0,
             leading: GestureDetector(
-              onTap: () => Get.back(),
+              onTap: () => handleBackWithAd(context),
               child: Container(
                 margin: EdgeInsets.all(8.w),
                 decoration: const BoxDecoration(
@@ -66,30 +70,39 @@ class SettingsView extends GetView<SettingsController> {
                   label: 'Rate Us',
                   onTap: () async {
                     final uri = Uri.parse(
-                      'https://play.google.com/store/apps/details?id=com.example.rbx_calculator',
+                      'https://play.google.com/store/apps/details?id=com.rbx_calculator',
                     );
                     if (await canLaunchUrl(uri)) {
                       await launchUrl(uri, mode: LaunchMode.externalApplication);
                     }
                   },
                 ),
-
+                SizedBox(height: 16.h),
                 _buildSettingsItem(
                   icon: Icons.shield_outlined,
                   label: 'Privacy Policy',
-                  onTap: () => Get.toNamed(Routes.PRIVACY_POLICY),
+                  onTap: () async {
+                    await showAdBeforeNavigation(context);
+                    Get.toNamed(Routes.PRIVACY_POLICY);
+                  },
                 ),
                 SizedBox(height: 16.h),
                 _buildSettingsItem(
                   icon: Icons.description_outlined,
                   label: 'Terms & Conditions',
-                  onTap: () => Get.toNamed(Routes.TERMS_CONDITIONS),
+                  onTap: () async {
+                    await showAdBeforeNavigation(context);
+                    Get.toNamed(Routes.TERMS_CONDITIONS);
+                  },
                 ),
                 SizedBox(height: 16.h),
                 _buildSettingsItem(
                   icon: Icons.headset_mic_outlined,
                   label: 'Contact Us',
-                  onTap: () => Get.toNamed(Routes.CONTACT_US),
+                  onTap: () async {
+                    await showAdBeforeNavigation(context);
+                    Get.toNamed(Routes.CONTACT_US);
+                  },
                 ),
               ],
             ),

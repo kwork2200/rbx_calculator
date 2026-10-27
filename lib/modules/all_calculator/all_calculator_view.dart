@@ -3,6 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import '../../ads/ad_on_back_wrapper.dart';
+import '../../ads/bottom_native_ad_bar.dart';
+import '../../ads/hybrid_native_ad_widget.dart';
+import '../../utils/functions.dart';
 import 'all_calculator_controller.dart';
 
 class AllCalculatorView extends GetView<AllCalculatorController> {
@@ -12,11 +16,12 @@ class AllCalculatorView extends GetView<AllCalculatorController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
+      bottomNavigationBar: const BottomNativeAdBar(),
       appBar: AppBar(
         backgroundColor: const Color(0xFF1A1A1A),
         elevation: 0,
         leading: GestureDetector(
-          onTap: () => Get.back(),
+          onTap: () => handleBackWithAd(context),
           child: Container(
             margin: EdgeInsets.all(8.w),
             decoration: const BoxDecoration(
@@ -49,7 +54,10 @@ class AllCalculatorView extends GetView<AllCalculatorController> {
                     iconBottomLabel: 'R',
                     title: 'USD to RBX',
                     subtitle: 'Calculate is USD to RBX Value are converted',
-                    onTap: () => controller.onUsdToRbx(),
+                    onTap: () async {
+                      await showAdBeforeNavigation(context);
+                      controller.onUsdToRbx();
+                    },
                   ),
                 ),
                 SizedBox(width: 12.w),
@@ -59,11 +67,16 @@ class AllCalculatorView extends GetView<AllCalculatorController> {
                     iconBottomLabel: '\$',
                     title: 'RBX to USD',
                     subtitle: 'Calculate is RBX to USD Value are convert',
-                    onTap: () => controller.onRbxToUsd(),
+                    onTap: () async {
+                      await showAdBeforeNavigation(context);
+                      controller.onRbxToUsd();
+                    },
                   ),
                 ),
               ],
             ),
+            SizedBox(height: 12.h),
+            HybridNativeAdWidget(),
             SizedBox(height: 12.h),
             Row(
               children: [
@@ -73,7 +86,10 @@ class AllCalculatorView extends GetView<AllCalculatorController> {
                     iconBottomLabel: '\$',
                     title: 'RBX to Dollar',
                     subtitle: 'Calculate is RBX to Dollar Value are convert',
-                    onTap: () => controller.onRbxToDollar(),
+                    onTap: () async {
+                      await showAdBeforeNavigation(context);
+                      controller.onRbxToDollar();
+                    },
                   ),
                 ),
                 SizedBox(width: 12.w),
@@ -83,13 +99,16 @@ class AllCalculatorView extends GetView<AllCalculatorController> {
                     iconBottomLabel: 'R',
                     title: 'Dollar to RBX',
                     subtitle: 'Calculate is Dollar to RBX Value are convert',
-                    onTap: () => controller.onDollarToRbx(),
+                    onTap: () async {
+                      await showAdBeforeNavigation(context);
+                      controller.onDollarToRbx();
+                    },
                   ),
                 ),
               ],
             ),
             SizedBox(height: 12.h),
-            _buildAdBanner(),
+            HybridNativeAdWidget(),
             SizedBox(height: 12.h),
             Row(
               children: [
@@ -99,7 +118,10 @@ class AllCalculatorView extends GetView<AllCalculatorController> {
                     iconBottomLabel: 'R',
                     title: 'BC to RBX',
                     subtitle: 'Calculate is BC to RBX Value are convert',
-                    onTap: () => controller.onBcToRbx(),
+                    onTap: () async {
+                      await showAdBeforeNavigation(context);
+                      controller.onBcToRbx();
+                    },
                   ),
                 ),
                 SizedBox(width: 12.w),
@@ -109,11 +131,16 @@ class AllCalculatorView extends GetView<AllCalculatorController> {
                     iconBottomLabel: 'R',
                     title: 'TBC to RBX',
                     subtitle: 'Calculate is TBC to RBX Value are convert',
-                    onTap: () => controller.onTbcToRbx(),
+                    onTap: () async {
+                      await showAdBeforeNavigation(context);
+                      controller.onTbcToRbx();
+                    },
                   ),
                 ),
               ],
             ),
+            SizedBox(height: 12.h),
+            HybridNativeAdWidget(),
             SizedBox(height: 12.h),
 
             Row(
@@ -124,7 +151,10 @@ class AllCalculatorView extends GetView<AllCalculatorController> {
                     iconBottomLabel: 'R',
                     title: 'OBC to RBX',
                     subtitle: 'Calculate is OBC to RBX Value are convert',
-                    onTap: () => controller.onObcToRbx(),
+                    onTap: () async {
+                      await showAdBeforeNavigation(context);
+                      controller.onObcToRbx();
+                    },
                   ),
                 ),
                 SizedBox(width: 12.w),
@@ -134,12 +164,16 @@ class AllCalculatorView extends GetView<AllCalculatorController> {
                     title: 'Play Game',
                     subtitle: 'Play smart, Play hard',
                     showAd: true,
-                    onTap: () => controller.onPlayGame(),
+                    onTap: () async {
+                      await showAdBeforeNavigation(context);
+                      controller.onPlayGame();
+                    },
                   ),
                 ),
               ],
             ),
             SizedBox(height: 20.h),
+            HybridNativeAdWidget(),
           ],
         ),
       ),
@@ -225,146 +259,6 @@ class AllCalculatorView extends GetView<AllCalculatorController> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-
-  Widget _buildAdBanner() {
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: const Color(0xFF1A1A1A),
-        borderRadius: BorderRadius.circular(16.r),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Ad header
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
-            child: Row(
-              children: [
-                // Ad thumbnail
-                Container(
-                  width: 50.w,
-                  height: 50.w,
-                  decoration: BoxDecoration(
-                    color: Colors.green.shade900,
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  child: Icon(Icons.card_giftcard,
-                      color: Colors.white, size: 28.sp),
-                ),
-                SizedBox(width: 10.w),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            'Daily Robux Rewards ',
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const Text('⭐', style: TextStyle(fontSize: 14)),
-                        ],
-                      ),
-                      Text(
-                        'Learn the fastest ways to get Robux',
-                        style: TextStyle(
-                          fontSize: 11.sp,
-                          color: Colors.white60,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 6.w, vertical: 3.h),
-                  decoration: BoxDecoration(
-                    color: Colors.white24,
-                    borderRadius: BorderRadius.circular(6.r),
-                  ),
-                  child: Text(
-                    'Ad',
-                    style: TextStyle(
-                      fontSize: 10.sp,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // Ad image area
-          Container(
-            width: double.infinity,
-            height: 140.h,
-            margin: EdgeInsets.symmetric(horizontal: 12.w),
-            decoration: BoxDecoration(
-              color: const Color(0xFF2A2A2A),
-              borderRadius: BorderRadius.circular(10.r),
-            ),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.monetization_on_outlined,
-                      color: Colors.green, size: 40.sp),
-                  SizedBox(height: 8.h),
-                  Text(
-                    'ROBUX-DESEMBER-*******',
-                    style: TextStyle(
-                      fontSize: 13.sp,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1,
-                    ),
-                  ),
-                  SizedBox(height: 4.h),
-                  Text(
-                    'You Receive: 9,999,999',
-                    style: TextStyle(fontSize: 11.sp, color: Colors.white60),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          // Get Now button
-          Padding(
-            padding: EdgeInsets.all(12.w),
-            child: GestureDetector(
-              onTap: () {},
-              child: Container(
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 14.h),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(30.r),
-                ),
-                child: Center(
-                  child: Text(
-                    'Get Now',
-                    style: TextStyle(
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

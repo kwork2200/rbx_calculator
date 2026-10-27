@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../ads/ad_on_back_wrapper.dart';
+import '../../ads/bottom_native_ad_bar.dart';
+import '../../ads/hybrid_native_ad_widget.dart';
 import '../../models/meme_model.dart';
 import 'memes_controller.dart';
 
@@ -13,7 +16,8 @@ class MemesView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF0D0D0D),
-      appBar: _buildAppBar(),
+      bottomNavigationBar: const BottomNativeAdBar(),
+      appBar: _buildAppBar(context),
       body: Obx(() {
         if (controller.isLoading.value) {
           return const Center(
@@ -26,7 +30,7 @@ class MemesView extends StatelessWidget {
   }
 
   // ─── AppBar ───────────────────────────────────────────────
-  PreferredSizeWidget _buildAppBar() {
+  PreferredSizeWidget _buildAppBar(BuildContext context) {
     return AppBar(
       backgroundColor: const Color(0xFF0D0D0D),
       elevation: 0,
@@ -34,7 +38,7 @@ class MemesView extends StatelessWidget {
       leading: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GestureDetector(
-          onTap: controller.goBack,
+          onTap: () => handleBackWithAd(context),
           child: Container(
             decoration: const BoxDecoration(
               color: Color(0xFF1C1C1C),
@@ -62,12 +66,23 @@ class MemesView extends StatelessWidget {
 
   // ─── List ─────────────────────────────────────────────────
   Widget _buildMemeList() {
+    const adInterval = 2; // Har 2 meme ke baad ek native ad
+    final memeCount = controller.memes.length;
+    // Last item ke baad ad nahi lagana, is liye ad count aise nikalte hain
+    final adCount = memeCount <= adInterval ? 0 : (memeCount - 1) ~/ adInterval;
+    final totalCount = memeCount + adCount;
+
     return ListView.separated(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      itemCount: controller.memes.length,
+      itemCount: totalCount,
       separatorBuilder: (_, __) => const SizedBox(height: 12),
       itemBuilder: (context, index) {
-        final meme = controller.memes[index];
+        // Har (2 items + 1 ad) wale block me teesri slot par ad dikhao
+        if ((index + 1) % (adInterval + 1) == 0) {
+          return const HybridNativeAdWidget();
+        }
+        final memeIndex = index - (index ~/ (adInterval + 1));
+        final meme = controller.memes[memeIndex];
         return _MemeCard(
           meme: meme,
           onShare: () => controller.onShareTapped(meme),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../ads/ad_on_back_wrapper.dart';
+import '../../ads/bottom_native_ad_bar.dart';
 import 'all_calculator_controller.dart';
 
 class CalculatorView extends GetView<AllCalculatorController> {
@@ -16,20 +18,16 @@ class CalculatorView extends GetView<AllCalculatorController> {
       }
     });
 
-    return WillPopScope(
-      onWillPop: () async {
-        controller.done();
-        return true;
-      },
-      child: Scaffold(
+    return Scaffold(
         backgroundColor: Colors.black,
+        bottomNavigationBar: const BottomNativeAdBar(),
         appBar: AppBar(
           backgroundColor: Colors.black,
           elevation: 0,
           leading: GestureDetector(
             onTap: () {
               controller.done();
-              Get.back();
+              handleBackWithAd(context);
             },
             child: Container(
               margin: EdgeInsets.all(8.w),
@@ -126,10 +124,6 @@ class CalculatorView extends GetView<AllCalculatorController> {
 
               SizedBox(height: 16.h),
 
-              // ── Ad Banner ──
-              _buildAdBanner(),
-              SizedBox(height: 16.h),
-
               // ── Membership Card (BC/TBC/OBC only) ──
               controller.membershipInfo != null
                   ? _buildMembershipCard()
@@ -139,8 +133,7 @@ class CalculatorView extends GetView<AllCalculatorController> {
             ],
           ),
         )),
-      ),
-    );
+      );
   }
 
   // ── Result Card ─────────────────────────────────────────────────────────────
@@ -190,118 +183,6 @@ class CalculatorView extends GetView<AllCalculatorController> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  // ── Ad Banner ───────────────────────────────────────────────────────────────
-  Widget _buildAdBanner() {
-    return GestureDetector(
-      onTap: () => controller.naviGetUrl(),
-      child: Container(
-        width: double.infinity,
-        padding: EdgeInsets.all(12.w),
-        decoration: BoxDecoration(
-          color: const Color(0xFF1A1A1A),
-          borderRadius: BorderRadius.circular(16.r),
-        ),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Container(
-                  width: 50.w,
-                  height: 50.w,
-                  decoration: BoxDecoration(
-                    color: Colors.green.shade900,
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  child: Icon(Icons.card_giftcard,
-                      color: Colors.white, size: 28.sp),
-                ),
-                SizedBox(width: 10.w),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Claim Free Robux 💎',
-                        style: TextStyle(
-                          fontSize: 13.sp,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Text(
-                        'Your Robux boost starts here.',
-                        style: TextStyle(
-                            fontSize: 11.sp, color: Colors.white60),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 6.w, vertical: 3.h),
-                  decoration: BoxDecoration(
-                    color: Colors.white24,
-                    borderRadius: BorderRadius.circular(20.r),
-                  ),
-                  child: Text('Ad',
-                      style:
-                      TextStyle(fontSize: 10.sp, color: Colors.white)),
-                ),
-              ],
-            ),
-            SizedBox(height: 10.h),
-            Container(
-              width: double.infinity,
-              height: 100.h,
-              decoration: BoxDecoration(
-                color: const Color(0xFF2A2A2A),
-                borderRadius: BorderRadius.circular(10.r),
-              ),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.monetization_on_outlined,
-                        color: Colors.green, size: 32.sp),
-                    SizedBox(height: 6.h),
-                    Text(
-                      'FREE ROBUX AVAILABLE!',
-                      style: TextStyle(
-                        fontSize: 13.sp,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 10.h),
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(vertical: 14.h),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(30.r),
-              ),
-              child: Center(
-                child: Text(
-                  'Claim Now',
-                  style: TextStyle(
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

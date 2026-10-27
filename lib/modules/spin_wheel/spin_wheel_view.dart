@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../ads/ad_on_back_wrapper.dart';
+import '../../ads/bottom_native_ad_bar.dart';
+import '../../ads/hybrid_native_ad_widget.dart';
 import 'spin_wheel_controller.dart';
 
 class SpinWheelView extends GetView<SpinWheelController> {
@@ -12,11 +15,12 @@ class SpinWheelView extends GetView<SpinWheelController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
+      bottomNavigationBar: const BottomNativeAdBar(),
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0,
         leading: GestureDetector(
-          onTap: () => Get.back(),
+          onTap: () => handleBackWithAd(context),
           child: Container(
             margin: EdgeInsets.all(8.w),
             decoration: const BoxDecoration(
@@ -80,15 +84,13 @@ class SpinWheelView extends GetView<SpinWheelController> {
 
           SizedBox(height: 4.h),
 
-          // ── Wheel or Result ──
-          Expanded(
-            child: Obx(
-                  () => controller.hasResult.value
-                  ? _buildWinCard()
-                  : _buildWheel(),
-            ),
+          Obx(
+                () => controller.hasResult.value
+                ? _buildWinCard()
+                : _buildWheel(),
           ),
-
+          SizedBox(height: 15.h),
+          HybridNativeAdWidget(),
           // ── Spin Now Button ──
           Obx(
                 () => controller.hasResult.value
@@ -119,9 +121,6 @@ class SpinWheelView extends GetView<SpinWheelController> {
               ),
             ),
           ),
-
-          // ── Bottom Ad ──
-          _buildBottomAd(),
         ],
       ),
     );
@@ -153,7 +152,7 @@ class SpinWheelView extends GetView<SpinWheelController> {
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.symmetric(vertical: 36.h, horizontal: 20.w),
+        padding: EdgeInsets.symmetric(vertical: 36.h, horizontal: 10.w),
         decoration: BoxDecoration(
           color: const Color(0xFF1E1E1E),
           borderRadius: BorderRadius.circular(20.r),
@@ -226,50 +225,6 @@ class SpinWheelView extends GetView<SpinWheelController> {
     );
   }
 
-  // ── Bottom Ad ──────────────────────────────────────────────────────────────
-  Widget _buildBottomAd() {
-    return Container(
-      color: const Color(0xFF1A1A1A),
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-      child: Row(
-        children: [
-          Container(
-            width: 40.w,
-            height: 40.w,
-            decoration: BoxDecoration(
-              color: Colors.green.shade900,
-              borderRadius: BorderRadius.circular(20.r),
-            ),
-            child: Icon(Icons.card_giftcard,
-                color: Colors.white, size: 20.sp),
-          ),
-          SizedBox(width: 10.w),
-          Expanded(
-            child: Text(
-              'You Receive  🔘 9,999,999',
-              style: TextStyle(fontSize: 12.sp, color: Colors.white70),
-            ),
-          ),
-          Container(
-            padding:
-            EdgeInsets.symmetric(horizontal: 14.w, vertical: 8.h),
-            decoration: BoxDecoration(
-              color: const Color(0xFF4ECFA8),
-              borderRadius: BorderRadius.circular(20.r),
-            ),
-            child: Text(
-              'Redeem',
-              style: TextStyle(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w700,
-                color: Colors.black,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 // ── Wheel Painter ─────────────────────────────────────────────────────────────

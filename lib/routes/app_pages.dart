@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../ads/ad_on_back_wrapper.dart';
 import '../modules/all_calculator/all_calculator_binding.dart';
 import '../modules/all_calculator/all_calculator_controller.dart';
 import '../modules/all_calculator/all_calculator_view.dart';
@@ -43,51 +44,54 @@ class AppPages {
 
     GetPage(
       name: Routes.SETTINGS,
-      page: () => const SettingsView(),
+      page: () => AdOnBackWrapper(child: const SettingsView()),
       binding: SettingsBinding(),
     ),
     GetPage(
       name: Routes.allCalculatorView,
-      page: () => const AllCalculatorView(),
+      page: () => AdOnBackWrapper(child: const AllCalculatorView()),
       binding: AllCalculatorBinding(),
     ),
     GetPage(
       name: Routes.scratchCardView,
-      page: () => const ScratchCardView(),
+      page: () => AdOnBackWrapper(child: const ScratchCardView()),
       binding: ScratchCardBinding(),
     ),
     GetPage(
       name: Routes.QUIZ_TIME,
-      page: () => const QuizTimeView(),
+      page: () => AdOnBackWrapper(child: const QuizTimeView()),
       binding: QuizTimeBinding(),
     ),
     GetPage(
       name: Routes.QUIZ_RESULT,
-      page: () => const QuizResultView(),
+      page: () => AdOnBackWrapper(
+        onBack: () => Get.offAllNamed(Routes.HOME),
+        child: const QuizResultView(),
+      ),
     ),
     GetPage(
       name: Routes.SPIN_WHEEL,
-      page: () => const SpinWheelView(),
+      page: () => AdOnBackWrapper(child: const SpinWheelView()),
       binding: SpinWheelBinding(),
     ),
     GetPage(
       name: Routes.memes,
-      page: () =>  MemesView(),
+      page: () => AdOnBackWrapper(child: MemesView()),
       binding: MemesBinding(),
     ),
     GetPage(
       name:  Routes.tips,
-      page: () => TipsView(),
+      page: () => AdOnBackWrapper(child: TipsView()),
       binding: TipsBinding(),
     ),
 
     GetPage(
       name:  Routes.tipDetail,
-      page: () => const TipDetailView(),
+      page: () => AdOnBackWrapper(child: const TipDetailView()),
     ),
     GetPage(
       name: Routes.CALCULATOR,
-      page: () => const CalculatorView(),
+      page: () => AdOnBackWrapper(child: const CalculatorView()),
       binding: BindingsBuilder(() {
         if (Get.isRegistered<AllCalculatorController>()) {
           Get.delete<AllCalculatorController>(force: true);
@@ -101,15 +105,15 @@ class AppPages {
 
     GetPage(
       name: Routes.PRIVACY_POLICY,
-      page: () => const PrivacyPolicyView(),
+      page: () => AdOnBackWrapper(child: const PrivacyPolicyView()),
     ),
     GetPage(
       name: Routes.TERMS_CONDITIONS,
-      page: () => const TermsConditionsView(),
+      page: () => AdOnBackWrapper(child: const TermsConditionsView()),
     ),
     GetPage(
       name: Routes.CONTACT_US,
-      page: () => const ContactUsView(),
+      page: () => AdOnBackWrapper(child: const ContactUsView()),
     ),
   ];
 }

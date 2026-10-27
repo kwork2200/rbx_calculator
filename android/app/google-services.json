@@ -1,40 +1,21 @@
 {
   "project_info": {
-    "project_number": "757101401778",
-    "project_id": "ai-enhancer-b4c47",
-    "storage_bucket": "ai-enhancer-b4c47.firebasestorage.app"
+    "project_number": "700377261447",
+    "project_id": "pdf-viewer-bf49e",
+    "storage_bucket": "pdf-viewer-bf49e.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:757101401778:android:f421c1416476bcedef5bab",
+        "mobilesdk_app_id": "1:700377261447:android:2909483c07bca3cd4e9f22",
         "android_client_info": {
-          "package_name": "com.example.ai_enhancer"
+          "package_name": "com.rbx_calculator"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyC-HpvmoLON6iCbmaxPx-QY-U_Zyq3_kv8"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:757101401778:android:5af60c1851d6eee8ef5bab",
-        "android_client_info": {
-          "package_name": "com.example.coin_calc"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyC-HpvmoLON6iCbmaxPx-QY-U_Zyq3_kv8"
+          "current_key": "AIzaSyApeTnaTFpr97dnARj_jWfpdpzZpC6B9r8"
         }
       ],
       "services": {

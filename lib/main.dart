@@ -55,14 +55,19 @@ class MyApp extends StatelessWidget {
 */
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:rbx_calculator/routes/app_pages.dart';
 import 'package:rbx_calculator/routes/app_routes.dart';
+import 'package:rbx_calculator/services/ad_service.dart';
 import 'package:rbx_calculator/services/firebase_init_service.dart';
 import 'package:rbx_calculator/services/remote_config_service.dart';
 
+import 'ads/app_open_ad_manager.dart';
+import 'ads/interstitial_ad_manager.dart';
 import 'core/theme/app_string.dart';
 import 'core/theme/app_theme.dart';
 import 'firebase_options.dart';
@@ -73,20 +78,28 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
 
-  try {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  print('✅ Firebase initialized');
+  await RemoteConfigService.instance.initialize();
+  print('🔄 [MAIN] Force fetching Remote Config (attempt 1)...');
+  await RemoteConfigService.instance.fetchAndActivate();
+  print('🔄 [MAIN] Force fetching Remote Config (attempt 2)...');
+  await RemoteConfigService.instance.fetchAndActivate();
+  final frequency = AdService.instance.interstitialAdFrequency;
+  print('🎯 [MAIN] FINAL INTERSTITIAL FREQUENCY FROM AdService: $frequency');
+  print('✅ Remote Config values fetched and activated');
 
-    print('✅ Firebase initialized successfully');
+  await MobileAds.instance.initialize();
+  print('✅ Google Mobile Ads initialized');
+  AppOpenAdManager.instance.loadAd();
 
-    await RemoteConfigService().initialize();
-
-    print('✅ Remote Config initialized');
-
-  } catch (e) {
-    print('❌ Firebase initialization error: $e');
-  }
+  InterstitialAdManager.instance.loadAd();
+  print('✅ Interstitial Ad Manager initialized');
 
   runApp(const MyApp());
 
@@ -109,7 +122,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(ThemeController());
-
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       minTextAdapt: true,
@@ -123,17 +135,6 @@ class MyApp extends StatelessWidget {
           initialRoute: AppPages.INITIAL,
           getPages: AppPages.routes,
         );
-        // return GetBuilder<ThemeController>(
-        //   builder: (controller) => GetMaterialApp(
-        //     title: AppString.hourlyChime,
-        //     debugShowCheckedModeBanner: false,
-        //     theme: AppTheme.lightTheme,
-        //     darkTheme: AppTheme.darkTheme,
-        //     themeMode: controller.themeMode,
-        //     initialRoute: Routes.SPLASH,
-        //     getPages: AppPages.routes,
-        //   ),
-        // );
       },
     );
   }

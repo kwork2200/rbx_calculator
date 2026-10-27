@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../ads/ad_on_back_wrapper.dart';
+import '../../ads/bottom_native_ad_bar.dart';
+import '../../ads/hybrid_native_ad_widget.dart';
 import 'scratch_card_controller.dart';
 
 class ScratchCardView extends GetView<ScratchCardController> {
@@ -12,11 +15,12 @@ class ScratchCardView extends GetView<ScratchCardController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
+      bottomNavigationBar: const BottomNativeAdBar(),
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0,
         leading: GestureDetector(
-          onTap: () => Get.back(),
+          onTap: () => handleBackWithAd(context),
           child: Container(
             margin: EdgeInsets.all(8.w),
             decoration: const BoxDecoration(
@@ -83,7 +87,8 @@ class ScratchCardView extends GetView<ScratchCardController> {
                   : _buildScratchCard(context),
             ),
           ),
-
+          SizedBox(height: 24.h),
+          HybridNativeAdWidget(),
           const Spacer(flex: 2),
         ],
       ),

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:rbx_calculator/ads/hybrid_native_ad_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../ads/bottom_native_ad_bar.dart';
 import '../../routes/app_routes.dart';
 import '../../services/remote_config_service.dart';
+import '../../utils/functions.dart';
 import 'home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -13,6 +16,7 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return  Scaffold(
       backgroundColor: const Color(0xFF0D0D0D),
+      bottomNavigationBar: const BottomNativeAdBar(),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
@@ -20,7 +24,7 @@ class HomeView extends GetView<HomeController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
-              _buildHeader(),
+              _buildHeader(context),
               SizedBox(height: 20.h),
 
               _buildRobuxBar(),
@@ -31,7 +35,8 @@ class HomeView extends GetView<HomeController> {
                 title: 'All Calculator',
                 subtitle: 'All RBX Calculator',
                 onTap: () async {
-                  final url = RemoteConfigService().appUrl.trim();
+                  await showAdBeforeNavigation(context);
+                  final url = RemoteConfigService.instance.appUrl.trim();
 
                   final uri = Uri.parse(url);
                   print("🚀 Going to  $uri");
@@ -44,8 +49,6 @@ class HomeView extends GetView<HomeController> {
                 },
               ),
               SizedBox(height: 16.h),
-              AdBannerWidget(),
-              SizedBox(height: 16.h),
 
               Row(
                 children: [
@@ -56,7 +59,8 @@ class HomeView extends GetView<HomeController> {
                       subtitle: 'Play smart, Play hard',
                       showAd: true,
                       onTap: () async {
-                        final url = RemoteConfigService().appUrl.trim();
+                        await showAdBeforeNavigation(context);
+                        final url = RemoteConfigService.instance.appUrl.trim();
 
                         final uri = Uri.parse(url);
                         print("🚀 Going to  $uri");
@@ -76,7 +80,8 @@ class HomeView extends GetView<HomeController> {
                       title: 'Scratch Card',
                       subtitle: 'Scratch the card win a prize',
                       onTap: () async {
-                        final url = RemoteConfigService().appUrl.trim();
+                        await showAdBeforeNavigation(context);
+                        final url = RemoteConfigService.instance.appUrl.trim();
 
                         final uri = Uri.parse(url);
                         print("🚀 Going to  $uri");
@@ -92,7 +97,8 @@ class HomeView extends GetView<HomeController> {
                 ],
               ),
               SizedBox(height: 12.h),
-
+              HybridNativeAdWidget(),
+              SizedBox(height: 12.h),
               Row(
                 children: [
                   Expanded(
@@ -101,7 +107,8 @@ class HomeView extends GetView<HomeController> {
                       title: 'Quiz Time',
                       subtitle: 'Play quiz and get amazing gift',
                       onTap: () async {
-                        final url = RemoteConfigService().appUrl.trim();
+                        await showAdBeforeNavigation(context);
+                        final url = RemoteConfigService.instance.appUrl.trim();
 
                         final uri = Uri.parse(url);
                         print("🚀 Going to  $uri");
@@ -122,7 +129,8 @@ class HomeView extends GetView<HomeController> {
                       subtitle: 'Play smart, Play hard',
                       showAd: true,
                       onTap: () async {
-                        final url = RemoteConfigService().appUrl.trim();
+                        await showAdBeforeNavigation(context);
+                        final url = RemoteConfigService.instance.appUrl.trim();
 
                         final uri = Uri.parse(url);
                         print("🚀 Going to  $uri");
@@ -138,13 +146,16 @@ class HomeView extends GetView<HomeController> {
                 ],
               ),
               SizedBox(height: 12.h),
+              HybridNativeAdWidget(),
+              SizedBox(height: 12.h),
 
               _buildWideCard(
                 icon: Icons.casino_outlined,
                 title: 'Lucky Spin Wheel',
                 subtitle: 'Spin wheels and get amazing gift',
                 onTap: () async {
-                  final url = RemoteConfigService().appUrl.trim();
+                  await showAdBeforeNavigation(context);
+                  final url = RemoteConfigService.instance.appUrl.trim();
 
                   final uri = Uri.parse(url);
                   print("🚀 Going to  $uri");
@@ -166,7 +177,8 @@ class HomeView extends GetView<HomeController> {
                       title: 'Meme',
                       subtitle: 'Play meme sounds or visuals for quick humor',
                       onTap: () async {
-                        final url = RemoteConfigService().appUrl.trim();
+                        await showAdBeforeNavigation(context);
+                        final url = RemoteConfigService.instance.appUrl.trim();
 
                         final uri = Uri.parse(url);
                         print("🚀 Going to  $uri");
@@ -186,7 +198,8 @@ class HomeView extends GetView<HomeController> {
                       title: 'Tips & Tricks',
                       subtitle: 'Provide helpful shortcuts or advice instantly',
                       onTap: () async {
-                        final url = RemoteConfigService().appUrl.trim();
+                        await showAdBeforeNavigation(context);
+                        final url = RemoteConfigService.instance.appUrl.trim();
 
                         final uri = Uri.parse(url);
                         print("🚀 Going to SETTINGS $uri");
@@ -203,6 +216,8 @@ class HomeView extends GetView<HomeController> {
                 ],
               ),
               SizedBox(height: 20.h),
+              HybridNativeAdWidget(),
+              SizedBox(height: 12.h),
             ],
           ),
         ),
@@ -210,7 +225,7 @@ class HomeView extends GetView<HomeController> {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -237,7 +252,8 @@ class HomeView extends GetView<HomeController> {
         ),
         GestureDetector(
           onTap: () async {
-            final url = RemoteConfigService().appUrl.trim();
+            await showAdBeforeNavigation(context);
+            final url = RemoteConfigService.instance.appUrl.trim();
 
             final uri = Uri.parse(url);
             print("🚀 Going to  $uri");
@@ -418,210 +434,6 @@ class HomeView extends GetView<HomeController> {
               ),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class AdBannerWidget extends StatelessWidget {
-  const AdBannerWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () async {
-        final url = RemoteConfigService().appUrl.trim();
-
-        final uri = Uri.parse(url);
-        print("🚀 Going to SETTINGS $uri");
-
-        await launchUrl(
-        uri,
-        mode: LaunchMode.inAppBrowserView,
-        );
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: const Color(0xFF1A1A1A),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: const Color(0xFF2A2A2A), width: 1),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Thumbnail
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Container(
-                      width: 56,
-                      height: 56,
-                      color: const Color(0xFF2C2C2C),
-                      child: const Icon(
-                        Icons.card_giftcard,
-                        color: Colors.green,
-                        size: 28,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  // Title & subtitle
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            const Text(
-                              'Daily Robux Rewards ',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                              ),
-                            ),
-                            const Text('⭐', style: TextStyle(fontSize: 14)),
-                          ],
-                        ),
-                        const SizedBox(height: 2),
-                        const Text(
-                          'Learn the fastest ways to get Robux',
-                          style: TextStyle(
-                            color: Color(0xFFAAAAAA),
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  // AD badge
-                  Container(
-                    padding:
-                    const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF333333),
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    child: const Text(
-                      'Ad',
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 11,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 12),
-              height: 160,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child:  Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Insert Code',
-                      style: TextStyle(color: Colors.white70, fontSize: 12),
-                    ),
-                    const SizedBox(height: 6),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 14, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Text(
-                        'ROBUX-DESEMBER-*******',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 0.5,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'You Receive  🪙 9,999,999',
-                          style: TextStyle(
-                              color: Colors.white70, fontSize: 11),
-                        ),
-                        const SizedBox(width: 10),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: Colors.green,
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: const Text(
-                            'Redeem',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            // ── Get Now button ─────────────────────────────────────
-            Padding(
-              padding: const EdgeInsets.all(12),
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    final url = RemoteConfigService().appUrl.trim();
-
-                    final uri = Uri.parse(url);
-                    print("🚀 Going to SETTINGS $uri");
-
-                    await launchUrl(
-                    uri,
-                    mode: LaunchMode.inAppBrowserView,
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    elevation: 0,
-                  ),
-                  child: const Text(
-                    'Get Now',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
             ),
           ],
         ),

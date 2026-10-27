@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../ads/ad_on_back_wrapper.dart';
+import '../../ads/bottom_native_ad_bar.dart';
 
 class ContactUsView extends StatelessWidget {
   const ContactUsView({Key? key}) : super(key: key);
@@ -11,11 +13,12 @@ class ContactUsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
+      bottomNavigationBar: const BottomNativeAdBar(),
       appBar: AppBar(
         backgroundColor: const Color(0xFF1A1A1A),
         elevation: 0,
         leading: GestureDetector(
-          onTap: () => Get.back(),
+          onTap: () => handleBackWithAd(context),
           child: Container(
             margin: EdgeInsets.all(8.w),
             decoration: const BoxDecoration(
@@ -52,9 +55,9 @@ class ContactUsView extends StatelessWidget {
             _buildContactItem(
               icon: Icons.email_outlined,
               label: 'Email Us',
-              value: 'support@rbxcalculator.com',
+              value: 'vaghasiyasanket36@gmail.com',
               onTap: () async {
-                final uri = Uri.parse('mailto:support@rbxcalculator.com');
+                final uri = Uri.parse('vaghasiyasanket36@gmail.com');
                 if (await canLaunchUrl(uri)) {
                   await launchUrl(uri);
                 }
@@ -89,7 +92,7 @@ class ContactUsView extends StatelessWidget {
               value: 'Share your feedback on Play Store',
               onTap: () async {
                 final uri = Uri.parse(
-                  'https://play.google.com/store/apps/details?id=com.example.rbx_calculator',
+                  'https://play.google.com/store/apps/details?id=com.rbx_calculator',
                 );
                 if (await canLaunchUrl(uri)) {
                   await launchUrl(uri, mode: LaunchMode.externalApplication);

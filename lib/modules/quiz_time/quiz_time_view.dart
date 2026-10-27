@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../ads/ad_on_back_wrapper.dart';
+import '../../ads/bottom_native_ad_bar.dart';
+import '../../ads/hybrid_native_ad_widget.dart';
+import '../../utils/functions.dart';
 import 'quiz_time_controller.dart';
 
 class QuizTimeView extends GetView<QuizTimeController> {
@@ -11,11 +15,12 @@ class QuizTimeView extends GetView<QuizTimeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
+      bottomNavigationBar: const BottomNativeAdBar(),
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0,
         leading: GestureDetector(
-          onTap: () => Get.back(),
+          onTap: () => handleBackWithAd(context),
           child: Container(
             margin: EdgeInsets.all(8.w),
             decoration: const BoxDecoration(
@@ -36,22 +41,14 @@ class QuizTimeView extends GetView<QuizTimeController> {
         centerTitle: false,
         systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Obx(() => _buildQuizBody()),
-            ),
-          ),
-          // Ad Banner Bottom
-          _buildBottomAd(),
-        ],
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        child: Obx(() => _buildQuizBody(context)),
       ),
     );
   }
 
-  Widget _buildQuizBody() {
+  Widget _buildQuizBody(BuildContext context) {
     final q = controller.currentQuestion;
 
     return Column(
@@ -98,7 +95,16 @@ class QuizTimeView extends GetView<QuizTimeController> {
           return Padding(
             padding: EdgeInsets.only(bottom: 14.h),
             child: GestureDetector(
-              onTap: () => controller.selectAnswer(index),
+              onTap: () async {
+                if (controller.isAnswered.value) return;
+                // Interstitial sirf last question ke baad (result par jaane se pehle)
+                final isLastQuestion = controller.currentIndex.value ==
+                    controller.totalQuestions - 1;
+                if (isLastQuestion) {
+                  await showAdBeforeNavigation(context);
+                }
+                controller.selectAnswer(index);
+              },
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
                 width: double.infinity,
@@ -121,87 +127,10 @@ class QuizTimeView extends GetView<QuizTimeController> {
             ),
           );
         }),
-      ],
-    );
-  }
 
-  Widget _buildBottomAd() {
-    return Container(
-      color: const Color(0xFF1A1A1A),
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Container(
-                width: 50.w,
-                height: 50.w,
-                decoration: BoxDecoration(
-                  color: Colors.green.shade900,
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-                child: Icon(Icons.card_giftcard, color: Colors.white, size: 28.sp),
-              ),
-              SizedBox(width: 10.w),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          'Daily Robux Rewards ',
-                          style: TextStyle(
-                            fontSize: 13.sp,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
-                          ),
-                        ),
-                        const Text('⭐'),
-                      ],
-                    ),
-                    Text(
-                      'Learn the fastest ways to get Robux',
-                      style: TextStyle(fontSize: 11.sp, color: Colors.white60),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.h),
-                decoration: BoxDecoration(
-                  color: Colors.white24,
-                  borderRadius: BorderRadius.circular(20.r),
-                ),
-                child: Text(
-                  'Ad',
-                  style: TextStyle(fontSize: 10.sp, color: Colors.white),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 8.h),
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.symmetric(vertical: 14.h),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(30.r),
-            ),
-            child: Center(
-              child: Text(
-                'Get Now',
-                style: TextStyle(
-                  fontSize: 15.sp,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-          ),
-          SizedBox(height: 4.h),
-        ],
-      ),
+        SizedBox(height: 28.h),
+        HybridNativeAdWidget(),
+      ],
     );
   }
 }

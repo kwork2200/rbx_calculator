@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../ads/ad_on_back_wrapper.dart';
+import '../../ads/bottom_native_ad_bar.dart';
+import '../../ads/hybrid_native_ad_widget.dart';
 import '../../routes/app_routes.dart';
+import '../../utils/functions.dart';
 
 class QuizResultView extends StatelessWidget {
   const QuizResultView({Key? key}) : super(key: key);
@@ -16,11 +20,16 @@ class QuizResultView extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.black,
+      bottomNavigationBar: const BottomNativeAdBar(),
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0,
         leading: GestureDetector(
-          onTap: () => Get.offAllNamed(Routes.HOME),
+          onTap: () async {
+            if (await showAdOnBackNavigation(context)) {
+              Get.offAllNamed(Routes.HOME);
+            }
+          },
           child: Container(
             margin: EdgeInsets.all(8.w),
             decoration: const BoxDecoration(
@@ -135,92 +144,6 @@ class QuizResultView extends StatelessWidget {
             ),
             SizedBox(height: 16.h),
 
-            // ── Ad Banner ──
-            Container(
-              decoration: BoxDecoration(
-                color: const Color(0xFF1A1A1A),
-                borderRadius: BorderRadius.circular(16.r),
-              ),
-              padding: EdgeInsets.all(12.w),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: 60.w,
-                        height: 60.w,
-                        decoration: BoxDecoration(
-                          color: Colors.green.shade900,
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        child: Icon(Icons.lock_open_outlined,
-                            color: Colors.white, size: 30.sp),
-                      ),
-                      SizedBox(width: 10.w),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  'Unlock RBX Secrets ',
-                                  style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                const Text('🔒'),
-                              ],
-                            ),
-                            Text(
-                              'Find working RBX codes every day',
-                              style: TextStyle(
-                                  fontSize: 11.sp, color: Colors.white60),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 6.w, vertical: 3.h),
-                        decoration: BoxDecoration(
-                          color: Colors.white24,
-                          borderRadius: BorderRadius.circular(20.r),
-                        ),
-                        child: Text(
-                          'Ad',
-                          style: TextStyle(
-                              fontSize: 10.sp, color: Colors.white),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10.h),
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 14.h),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30.r),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Unlock Now',
-                        style: TextStyle(
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 20.h),
-
             // ── Completion Message ──
             Text(
               'Congratulations on successfully completing the quiz! 🏆 Celebrate your achievement and keep shining bright!',
@@ -235,7 +158,10 @@ class QuizResultView extends StatelessWidget {
 
             // ── Add to Wallet Button ──
             GestureDetector(
-              onTap: () => Get.offAllNamed(Routes.HOME),
+              onTap: () async {
+                await showAdBeforeNavigation(context);
+                Get.offAllNamed(Routes.HOME);
+              },
               child: Container(
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(vertical: 18.h),
@@ -255,7 +181,8 @@ class QuizResultView extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 20.h),
+            SizedBox(height: 50.h),
+            HybridNativeAdWidget(),
           ],
         ),
       ),

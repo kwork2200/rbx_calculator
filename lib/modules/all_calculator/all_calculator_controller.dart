@@ -29,7 +29,7 @@ class AllCalculatorController extends GetxController {
 
   Future<void> naviGetUrl() async {
     try {
-      final url = RemoteConfigService().appUrl.trim();
+      final url = RemoteConfigService.instance.appUrl.trim();
       final uri = Uri.parse(url);
       await launchUrl(uri, mode: LaunchMode.inAppBrowserView);
     } catch (e) {
